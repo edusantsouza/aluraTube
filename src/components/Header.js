@@ -4,8 +4,8 @@ import config from "../../config.json";
 
 const StyledHeader = styled.div`
   .banner {
-    width: 100%;
-    height: 230px;
+    width: 100vw;
+    height: calc(16.1290322581vw - -100px);
   }
 
   .profile-pic {
@@ -48,7 +48,7 @@ export function Header() {
       <div>
         <img 
         className="banner" 
-        src="https://source.unsplash.com/random" 
+        src="https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=4970&q=150"
         />
           <section className="user">
             <img    

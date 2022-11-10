@@ -3,6 +3,20 @@
   "name": "Eduardo Sant",
   "position": "Computer Engineering Student",
   "github": "edusantsouza",
+  "favorites":[
+    {
+      "name": "edusantsouza",
+      "url": "url"
+    }, 
+    {
+      "name": "omariosouto",
+      "url": "url"
+    }, 
+    {
+      "name": "peas",
+      "url": "url"
+    }
+  ],
   "playlists": {
     "Jogos": [
         {

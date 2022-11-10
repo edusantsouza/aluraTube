@@ -35,4 +35,9 @@ export const CSSReset = createGlobalStyle`
       opacity: .5;
     }
   }
+  .fav-section{
+    display: flex;
+    align-items: center;
+    gap: 40px
+    }
 `;
