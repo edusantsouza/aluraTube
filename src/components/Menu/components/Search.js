@@ -39,7 +39,7 @@ const StyledSearch = styled.div`
 // Search
 // Informação sempre desce
 
-export default function Search({valorDoFiltro, setValorDoFiltro}) {
+export function Search({valorDoFiltro, setValorDoFiltro}) {
     return (
         <StyledSearch>
             <input type="text" onChange={(e)=>{
