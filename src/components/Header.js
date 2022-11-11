@@ -5,7 +5,8 @@ import config from "../../config.json";
 const StyledHeader = styled.div`
   .banner {
     width: 100vw;
-    height: calc(16.1290322581vw - -100px);
+    height: 230px;
+    background-image: url("https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
   }
 
   .profile-pic {
@@ -46,10 +47,10 @@ export function Header() {
   return (
     <StyledHeader>
       <div>
-        <img 
+        <div 
         className="banner" 
-        src="https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=4970&q=150"
-        />
+        >          
+        </div>
           <section className="user">
             <img    
             className="profile-pic"

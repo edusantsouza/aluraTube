@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import Search from "./Components/Search";
 
 
-const StyledMenu = styled.div`
+const StyledMenu = styled.header`
   display: flex;
   flex-direction: row;
   height: 56px;
@@ -23,17 +24,14 @@ const StyledMenu = styled.div`
       fill: ${({ theme }) => theme.textColorBase || "#222222"};
     }
   }
-  a:hover {
-    opacity: 1;
-  }
 `;
-
-export function Menu() {
+export function Menu({valorDoFiltro, setValorDoFiltro}) {
   return (
     <StyledMenu>
       <div>
-        <a href="https://youtube.com" target="new_blank"><Logo /></a>
+        <Logo />
       </div>
+        <Search valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
     </StyledMenu>
   );
 }

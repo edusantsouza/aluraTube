@@ -1,36 +1,36 @@
 
 import  {CSSReset}  from "../src/components/CSSReset";
-import  {Menu} from "../src/components/Menu";
+import React from "react";
+import config from "../config.json";
+import  {Menu} from "../src/components/Menu/indexMenu";
 import  {Header} from "../src/components/Header";
 import  {Timeline}  from "../src/components/Timeline";
 import { Section } from "../src/components/Section";
-import { Adicionar } from "../src/components/addFav";
 import {Favorites} from "../src/components/Favorites" 
-import config from "../config.json";
+import { Adicionar } from "../src/components/ButtonAdd";
+import { OpenModal } from "../src/components/ModalAddFav";
 
-const favoritos = [
-  {name: "edusantsouza"},
-  {name: "omariosouto"},
-  {name: "peas"},
-]
 
 function Homepage() {
+  const [valorDoFiltro, setValorDoFiltro] = React.useState("");
   return (
       <>
         <CSSReset/>
-          <Menu />
+          <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} /> 
           <Header />
-          <Timeline playlists={config.playlists}>
+          <Timeline valorDoFiltro={valorDoFiltro} playlists={config.playlists}>
             Conteúdo
           </Timeline>
           <Section>
             {
-              favoritos.map((item)=>{
+              config.favoritos.map((item)=>{
                 return(
                   <Favorites name={item.name} />
-                )
-              })
-            }
+                  )
+                })
+              }
+            <Adicionar/>
+              <OpenModal />
           </Section>
       </>
   );

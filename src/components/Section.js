@@ -11,6 +11,7 @@ h2 {
   }
 section {
   padding: 16px;
+  position: relative;
   }
 ul{
   display: flex;

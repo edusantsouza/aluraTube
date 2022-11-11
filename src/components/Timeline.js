@@ -47,7 +47,7 @@ const StyledTimeline = styled.div`
   }
 `;
 
-export function Timeline(props) {
+export function Timeline({valorDoFiltro, ...props}) {
   const playlistNames = Object.keys(props.playlists);
   return (
     <StyledTimeline>
@@ -59,7 +59,11 @@ export function Timeline(props) {
             <h2>{playlistName}</h2>
             <div>
               {
-                videos.map((video) => {
+                videos.filter((video)=>{
+                      const titleNormalized = video.title.toLowerCase()
+                      const valorDoFiltroNormalized = valorDoFiltro.toLowerCase()
+                      return titleNormalized.includes(valorDoFiltroNormalized)
+                }).map((video) => {
                   return (
                   <a href={video.url}>
                   <img src={video.thumb} />

@@ -3,19 +3,11 @@
   "name": "Eduardo Sant",
   "position": "Computer Engineering Student",
   "github": "edusantsouza",
-  "favorites":[
-    {
-      "name": "edusantsouza",
-      "url": "url"
-    }, 
-    {
-      "name": "omariosouto",
-      "url": "url"
-    }, 
-    {
-      "name": "peas",
-      "url": "url"
-    }
+  "favoritos": [
+    {"name": "edusantsouza"},
+    {"name": "omariosouto"},
+    {"name": "peas"},
+    {"name": "igorlagoas"}
   ],
   "playlists": {
     "Jogos": [
