@@ -3,6 +3,8 @@ import config from "../../config.json";
 
 
 const StyledHeader = styled.div`
+  background-color: ${({theme})=> theme.backgroundLevel1};
+
   .banner {
     width: 100vw;
     height: 230px;

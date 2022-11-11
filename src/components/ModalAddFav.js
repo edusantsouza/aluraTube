@@ -70,6 +70,7 @@ button {
 export function OpenModal({addFav, setAddFav, isVisible, setIsVisible}){
   const insertFav = (addFav) => {
     //Mudar isso depois para cadastrar essas infos no banco de dados
+    //Se o input estiver vazio, exibir alerta
     config.favoritos.push({"name":addFav})
     }
   

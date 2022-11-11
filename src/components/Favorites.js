@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 
 
+
+
 const FavoritesStyled = styled.div`
  li {
   padding: 16px;
@@ -38,6 +40,8 @@ img {
 export function Favorites(props){
   return (
     <FavoritesStyled>
+        <lightTheme/>
+      
       <li>
           <a href={props.name}
            target="_blank">

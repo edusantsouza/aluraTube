@@ -1,5 +1,3 @@
-
-import  {CSSReset}  from "../src/components/CSSReset";
 import React from "react";
 import config from "../config.json";
 import  {Menu} from "../src/components/Menu/indexMenu";
@@ -19,12 +17,12 @@ function Homepage() {
   const [addFav, setAddFav] = React.useState("") 
  
   return (   
-      <div onClick={(e)=>{
-        if(!e.target.classList.contains('modal-open')){
-          isVisible === true ? setIsVisible(false) : null
-        }      
-      }}>
-        <CSSReset/>
+    <div onClick={(e)=>{
+      if(!e.target.classList.contains('modal-open')){
+        isVisible === true ? setIsVisible(false) : null
+      }      
+    }}>
+
           <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} /> 
           <Header />
           <Timeline valorDoFiltro={valorDoFiltro} playlists={config.playlists}>
@@ -42,6 +40,7 @@ function Homepage() {
             <OpenModal addFav={addFav} setAddFav={setAddFav} isVisible={isVisible} setIsVisible={setIsVisible}/>
           </Section>
       </div>
+
   );
 }
 export default Homepage;
