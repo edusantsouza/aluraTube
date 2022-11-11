@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Search} from "./Components/Search";
+import {Search} from "./components/Search";
 
 
 const StyledMenu = styled.header`
