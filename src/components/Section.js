@@ -19,11 +19,12 @@ ul{
 `
 
 export function Section(props) {
+
   return(
     <SectionStyled>
       <section>
           <h2>Meus favoritos</h2>
-          <ul class="my-favorites">
+          <ul>
             {props.children}
           </ul>
       </section>

@@ -7,14 +7,23 @@ import  {Header} from "../src/components/Header";
 import  {Timeline}  from "../src/components/Timeline";
 import { Section } from "../src/components/Section";
 import {Favorites} from "../src/components/Favorites" 
-import { Adicionar } from "../src/components/ButtonAdd";
+import { ButtonAdd } from "../src/components/ButtonAdd";
 import { OpenModal } from "../src/components/ModalAddFav";
+
+
 
 
 function Homepage() {
   const [valorDoFiltro, setValorDoFiltro] = React.useState("");
-  return (
-      <>
+  const [isVisible, setIsVisible] = React.useState(false)
+  const [addFav, setAddFav] = React.useState("") 
+ 
+  return (   
+      <div onClick={(e)=>{
+        if(!e.target.classList.contains('modal-open')){
+          isVisible === true ? setIsVisible(false) : null
+        }      
+      }}>
         <CSSReset/>
           <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} /> 
           <Header />
@@ -29,10 +38,10 @@ function Homepage() {
                   )
                 })
               }
-            <Adicionar/>
-              <OpenModal />
+            <ButtonAdd isVisible={isVisible} setIsVisible={setIsVisible} />
+            <OpenModal addFav={addFav} setAddFav={setAddFav} isVisible={isVisible} setIsVisible={setIsVisible}/>
           </Section>
-      </>
+      </div>
   );
 }
 export default Homepage;

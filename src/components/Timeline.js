@@ -51,33 +51,42 @@ export function Timeline({valorDoFiltro, ...props}) {
   const playlistNames = Object.keys(props.playlists);
   return (
     <StyledTimeline>
-      <div>
-      {playlistNames.map((playlistName) => {
-        const videos = props.playlists[playlistName];
-        return (
-          <section>
-            <h2>{playlistName}</h2>
-            <div>
-              {
-                videos.filter((video)=>{
-                      const titleNormalized = video.title.toLowerCase()
-                      const valorDoFiltroNormalized = valorDoFiltro.toLowerCase()
-                      return titleNormalized.includes(valorDoFiltroNormalized)
-                }).map((video) => {
-                  return (
-                  <a href={video.url}>
-                  <img src={video.thumb} />
-                   <span>
-                    {video.title}
-                  </span>
-                  </a>
-                 )
-                })}
-            </div>
-          </section>
-          );
-              })}
-              </div>
-      </StyledTimeline>
+                  <div>
+                        {playlistNames.map((item) => {
+                            const videos = props.playlists[item];
+                            const listVideos = videos.filter((video)=>{
+                            const titleNormalized = video.title.toLowerCase()
+                            const valorDoFiltroNormalized = valorDoFiltro.toLowerCase()
+                            return titleNormalized.includes(valorDoFiltroNormalized)
+                          })  
+
+                          if(listVideos.length > 0){
+                          return (
+                            <section>
+                              <h2>{item}</h2>
+                              <div>
+                                {
+                                listVideos.map((video) => {
+                                    return (
+                                    <a href={video.url}>
+                                    <img src={video.thumb}/>
+                                    <span>
+                                      {video.title}
+                                    </span>
+                                    </a>
+                                  )
+                                  })}
+                              </div>
+                            </section>
+                            );
+                        } else {
+                          return (
+                            <section>
+                                <h2></h2>
+                            </section>
+                          )
+                        }})}
+                  </div>
+     </StyledTimeline>
     )
   }

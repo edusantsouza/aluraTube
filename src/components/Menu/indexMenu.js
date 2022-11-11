@@ -23,6 +23,7 @@ const StyledMenu = styled.header`
     .text {
       fill: ${({ theme }) => theme.textColorBase || "#222222"};
     }
+    cursor: pointer;
   }
 `;
 export function Menu({valorDoFiltro, setValorDoFiltro}) {
@@ -31,7 +32,7 @@ export function Menu({valorDoFiltro, setValorDoFiltro}) {
       <div>
         <Logo />
       </div>
-        <Search valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
+        <Search setValorDoFiltro={setValorDoFiltro} />
     </StyledMenu>
   );
 }
