@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 
-const FavoritesStyled = styled.div`
+const StyledFavorites = styled.div`
  li {
   padding: 16px;
   cursor: pointer;
@@ -17,7 +17,6 @@ const FavoritesStyled = styled.div`
   align-items: center;
   width: fit-content;
   text-decoration: none;
-  color: black
  }
  
 img {
@@ -29,6 +28,7 @@ img {
   p{
     margin-top: 10px;
     font-weight: 600;
+    color: ${({theme}) => theme.textColorBase}
   }
 
   li {
@@ -39,10 +39,8 @@ img {
 
 export function Favorites(props){
   return (
-    <FavoritesStyled>
-        <lightTheme/>
-      
-      <li>
+    <StyledFavorites>  
+      <li key={props.name}>
           <a href={props.name}
            target="_blank">
             <img 
@@ -52,6 +50,6 @@ export function Favorites(props){
             <p>{props.name}</p>
           </a>
       </li>
-    </FavoritesStyled>
+    </StyledFavorites>
   )
 }

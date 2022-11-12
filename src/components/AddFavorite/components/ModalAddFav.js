@@ -1,18 +1,15 @@
 import styled from "styled-components";
-import config from "../../config.json"
+import config from "../../../../config.json"
 
 const StyledModal = styled.div`
 height: 200px;
 width: 300px;
-background-color: #f5f5f5;
+background-color: ${({theme})=> theme.backgroundLevel2};
 position: fixed;
-border: .5px solid rgba(178, 184, 194) ;
-border-radius: 10px;
-left: 50%;
-transform: translateX(-50%);
-bottom: 50%;
-transform: translateY(50%);
-
+border-radius: 5px;
+left:50%;
+top: 50%;
+transform: translate(-50%, -50%);
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -21,8 +18,8 @@ box-shadow: 2px 2px 20px 1px rgba(0, 0, 0, 0.3);
 
 h2{
   font-size: 18px;
-  margin: 0;
   margin-bottom: 10px;
+  width: auto;
 }
 
 p{
@@ -34,30 +31,34 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px
+  gap: 10px
 }
 
 input{
-width: 160px;
-height: 23px;
-border: 1px solid rgba(178, 184, 194, .2) .5px;
+width: 200px;
+height: 30px;
+border: none;
 border-radius: 2px;
 outline: none;
+padding: 10px 6px;
+background-color: ${({theme})=> theme.backgroundLevel1 };
+color: ${({theme})=> theme.textColorBase};
+font-size: 12px;
 }
 
 button {
-    width: 90px;
-    height: 25px;
+    width: 200px;
+    padding: 10px 10px;
     display: inline-block;
     border: none;
     border-radius: 2px;
     margin: 0;
     text-decoration: none;
-    background: #0069ed;
+    background: red;
     color: #ffffff;
     font-family: sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 550;
     cursor: pointer;
     text-align: center;
     transition: background 250ms ease-in-out, 
@@ -65,23 +66,31 @@ button {
     -webkit-appearance: none;
     -moz-appearance: none;
 }
+
+button:hover {
+  opacity: 1;
+}
 `
 
 export function OpenModal({addFav, setAddFav, isVisible, setIsVisible}){
   const insertFav = (addFav) => {
     //Mudar isso depois para cadastrar essas infos no banco de dados
-    //Se o input estiver vazio, exibir alerta
-    config.favoritos.push({"name":addFav})
-    }
+     config.favoritos.push({"name":addFav}) 
+  }
+  
+  //RegEx que verifica se a string recebida tem conteúdo ou só espaço em branco
+  const isBlank = (str) => {
+    return (!str || /^\s*$/.test(str));
+  }
   
   return(
     
     isVisible && <StyledModal className="modal-open">
       <div className="modal-open">
                 <h2 className="modal-open">Adicionar Favorito</h2>
-                <p className="modal-open">Digite o nome do perfil:</p>
                 <form className="modal-open">
                   <input 
+                  placeholder="Nome do perfil"
                   type="text" 
                   className="modal-open" 
                   onChange={(e)=>{
@@ -89,7 +98,12 @@ export function OpenModal({addFav, setAddFav, isVisible, setIsVisible}){
                   }}/>
                   <button 
                       onClick={(e)=>{
+                      // console.log(isBlank(addFav))s
+                      !isBlank(addFav) ?
                       insertFav(addFav)
+                      :alert("Você deve inserir um nome antes.")
+
+                      setAddFav("")
                    }}>
                       Adicionar
                   </button>

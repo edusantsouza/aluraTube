@@ -29,7 +29,7 @@ function ProviderWrapper(props){
   )
 }
 
-
+//Componente que renderiza o conteúdo da index.js, passando os conteúdos via props
 function MyApp({Component, pageProps}){
   const context = React.useContext(ColorModeContext)
   return (
