@@ -1,12 +1,13 @@
 import styled from "styled-components";
-
+import { createClient } from "@supabase/supabase-js";
+import React from "react";
 
 const StyledTimeline = styled.div`
   flex: 1;
   width: 100%;
   padding: 16px;
   overflow: hidden;
-  background-color: ${({theme})=> theme.backgroundBase};
+  background-color: ${({ theme }) => theme.backgroundBase};
   h2 {
     font-size: 16px;
     margin-bottom: 16px;
@@ -26,13 +27,12 @@ const StyledTimeline = styled.div`
     overflow: hidden;
     padding: 16px;
     div {
-      
       width: calc(100vw - 16px * 4);
       display: grid;
       grid-gap: 16px;
-      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       grid-auto-flow: column;
-      grid-auto-columns: minmax(200px,1fr);
+      grid-auto-columns: minmax(200px, 1fr);
       overflow-x: scroll;
       scroll-snap-type: x mandatory;
       a {
@@ -48,46 +48,69 @@ const StyledTimeline = styled.div`
   }
 `;
 
-export function Timeline({valorDoFiltro, ...props}) {
-  const playlistNames = Object.keys(props.playlists);
+const PUBLIC_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eGxqbXp4bGJvdmF3Z3lxeWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzNTQxMzksImV4cCI6MTk4MzkzMDEzOX0.UwTUw0goJq5SCI2KU_ti45SJem4eK-KWpEyjaY3ShbU";
+const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
+
+export function Timeline({ valorDoFiltro, ...props }) {
+  const [playlists, setPlaylist] = React.useState({
+    jogos: [],
+  });
+
+  //Descobrir como parar o comportamento da página de buscar os itens de forma duplicado no DB
+  React.useEffect(() => {
+    supabase
+      .from("list_video")
+      .select("*")
+      .then((dados) => {
+        const novasPlaylists = { ...playlists };
+        console.log("dads", dados.data);
+        dados.data.forEach((item) => {
+          // if (!novasPlaylists[item.playlist]) {
+          //   novasPlaylists[item.playlist] = [];
+          // }
+          console.log("newssss", novasPlaylists[item.playlist]);
+          novasPlaylists[item.playlist].push(item);
+        });
+        setPlaylist(novasPlaylists);
+      });
+  }, []);
+  const videos = playlists.jogos;
+
+  console.log("aqui", playlists);
+
   return (
     <StyledTimeline>
+      {
+        <div>
+          {Object.entries(playlists).map((item, i) => {
+            const listVideos = videos.filter((video) => {
+              const titleNormalized = video.title.toLowerCase();
+              const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
+              return titleNormalized.includes(valorDoFiltroNormalized);
+            });
+            if (listVideos.length > 0) {
+              return (
+                <section>
+                  <h2>{item[i]}</h2>
                   <div>
-                        {playlistNames.map((item) => {
-                            const videos = props.playlists[item];
-                            const listVideos = videos.filter((video)=>{
-                            const titleNormalized = video.title.toLowerCase()
-                            const valorDoFiltroNormalized = valorDoFiltro.toLowerCase()
-                            return titleNormalized.includes(valorDoFiltroNormalized)
-                          })  
-
-                          if(listVideos.length > 0){
-                          return (
-                            <section>
-                              <h2>{item}</h2>
-                              <div>
-                                {
-                                listVideos.map((video) => {
-                                    return (
-                                    <a href={video.url}>
-                                    <img src={video.thumb}/>
-                                    <span>
-                                      {video.title}
-                                    </span>
-                                    </a>
-                                  )
-                                  })}
-                              </div>
-                            </section>
-                            );
-                        } else {
-                          return (
-                            <section>
-                                <h2></h2>
-                            </section>
-                          )
-                        }})}
+                    {listVideos.map((video) => {
+                      console.log("leeeeh", listVideos);
+                      return (
+                        <a href={video.url}>
+                          <img src={video.thumb} />
+                          <span>{video.title}</span>
+                        </a>
+                      );
+                    })}
                   </div>
-     </StyledTimeline>
-    )
-  }
+                </section>
+              );
+            }
+          })}
+        </div>
+      }
+    </StyledTimeline>
+  );
+}

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "It's an Alura class about React and Figma's components",
   "dependencies": {
+    "@supabase/supabase-js": "^2.1.0",
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
