@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import config from "../config.json";
 import { Menu } from "../src/components/Menu";
@@ -9,12 +9,32 @@ import { Favorites } from "../src/components/AddFavorite";
 import { ButtonAdd } from "../src/components/AddFavorite/components/ButtonAdd";
 import { OpenModal } from "../src/components/AddFavorite/components/ModalAddFav";
 import { RegisterVideo } from "../src/components/RegisterVideo/index";
+import { createClient } from "@supabase/supabase-js";
+
+const PUBLIC_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eGxqbXp4bGJvdmF3Z3lxeWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzNTQxMzksImV4cCI6MTk4MzkzMDEzOX0.UwTUw0goJq5SCI2KU_ti45SJem4eK-KWpEyjaY3ShbU";
+const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
 function Homepage() {
   const [valorDoFiltro, setValorDoFiltro] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false);
   const [addFav, setAddFav] = React.useState("");
+  const [listFav, setListFav] = React.useState([]);
+  const [reload, setReload] = React.useState(false);
 
+  React.useEffect(() => {
+    supabase
+      .from("list_favorites")
+      .select("*")
+      .then((dados) => {
+        const newSetListFav = [...listFav];
+        dados.data.forEach((item) => {
+          newSetListFav.push(item);
+        });
+        setListFav(newSetListFav);
+      });
+  }, [addFav]);
   return (
     <div
       onClick={(e) => {
@@ -36,16 +56,22 @@ function Homepage() {
 
       <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
       <Header />
-      <RegisterVideo />
-      <Timeline valorDoFiltro={valorDoFiltro} playlists={config.playlists}>
+      <RegisterVideo reload={reload} setReload={setReload} />
+      <Timeline valorDoFiltro={valorDoFiltro} listFav={listFav} reload={reload}>
         Conteúdo
       </Timeline>
       <Section>
-        <ButtonAdd isVisible={isVisible} setIsVisible={setIsVisible} />
-        {config.favoritos.map((item) => {
+        <ButtonAdd
+          setListFav={setListFav}
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+        />
+
+        {listFav.map((item) => {
           return <Favorites name={item.name} />;
         })}
         <OpenModal
+          supabase={supabase}
           addFav={addFav}
           setAddFav={setAddFav}
           isVisible={isVisible}

@@ -1,14 +1,14 @@
 import { StyledRegisterVideo } from "./styles";
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 import React from "react";
 
-
-const getThumb = (url) =>{
-    return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`
-}
-const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eGxqbXp4bGJvdmF3Z3lxeWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzNTQxMzksImV4cCI6MTk4MzkzMDEzOX0.UwTUw0goJq5SCI2KU_ti45SJem4eK-KWpEyjaY3ShbU"
-const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co"
-const supabase = createClient(PROJECT_URL, PUBLIC_KEY)
+const PUBLIC_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eGxqbXp4bGJvdmF3Z3lxeWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzNTQxMzksImV4cCI6MTk4MzkzMDEzOX0.UwTUw0goJq5SCI2KU_ti45SJem4eK-KWpEyjaY3ShbU";
+const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
+const getThumb = (url) => {
+  return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`;
+};
 
 function useForm(props) {
   const [values, setValues] = React.useState(props.initialValues);
@@ -26,14 +26,16 @@ function useForm(props) {
   };
 }
 const isBlank = (str) => {
-    return (!str || /^\s*$/.test(str));
-  }
+  return !str || /^\s*$/.test(str);
+};
 const ModalAddVideo = ({
   formCadastro,
   isModal,
   setIsModal,
   values,
   setValues,
+  reload,
+  setReload,
 }) => {
   return (
     //Aproveitar o modal para implementar a opção de adicionar playlist
@@ -41,24 +43,30 @@ const ModalAddVideo = ({
     isModal && (
       <form
         className="modal"
-        onSubmit={(e) => {    
+        onSubmit={(e) => {
           e.preventDefault();
-          
-          if(!isBlank(formCadastro.values.titulo && formCadastro.values.url)){
-          setIsModal(false);
-          setValues(formCadastro.clearInput)
+
+          !reload ? setReload(true) : setReload(false);
+          reload ? setReload(false) : setReload(true);
+          console.log(reload);
+
+          if (!isBlank(formCadastro.values.titulo && formCadastro.values.url)) {
+            setIsModal(false);
+            setValues(formCadastro.clearInput);
           } else {
-            alert("Ops! Preencha corretamente os campos.")
+            alert("Ops! Preencha corretamente os campos.");
           }
-          supabase.from("list_video").insert({
-            title:formCadastro.values.titulo,
-            url:formCadastro.values.url,
-            thumb:getThumb(formCadastro.values.url),
-            playlist:"jogos",
-          })
-          .then((response)=>{
-            console.log(response)
-          })
+          supabase
+            .from("list_video")
+            .insert({
+              title: formCadastro.values.titulo,
+              url: formCadastro.values.url,
+              thumb: getThumb(formCadastro.values.url),
+              playlist: "jogos",
+            })
+            .then((response) => {
+              console.log(response);
+            });
         }}
       >
         <div>
@@ -88,8 +96,7 @@ const ModalAddVideo = ({
   );
 };
 
-
-export const RegisterVideo = (props) => {
+export const RegisterVideo = ({ reload, setReload }) => {
   const [isModal, setIsModal] = React.useState(false);
   const [values, setValues] = React.useState({ titulo: "", url: "" });
   const formCadastro = useForm({
@@ -102,6 +109,8 @@ export const RegisterVideo = (props) => {
         +
       </button>
       <ModalAddVideo
+        reload={reload}
+        setReload={setReload}
         formCadastro={formCadastro}
         values={values}
         setValues={setValues}

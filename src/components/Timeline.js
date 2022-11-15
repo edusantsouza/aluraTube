@@ -53,11 +53,10 @@ const PUBLIC_KEY =
 const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
 const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
-export function Timeline({ valorDoFiltro, ...props }) {
+export function Timeline({ valorDoFiltro, listFav, reload }) {
   const [playlists, setPlaylist] = React.useState({
     jogos: [],
   });
-
   //Descobrir como parar o comportamento da página de buscar os itens de forma duplicado no DB
   React.useEffect(() => {
     supabase
@@ -65,20 +64,16 @@ export function Timeline({ valorDoFiltro, ...props }) {
       .select("*")
       .then((dados) => {
         const novasPlaylists = { ...playlists };
-        console.log("dads", dados.data);
         dados.data.forEach((item) => {
           // if (!novasPlaylists[item.playlist]) {
           //   novasPlaylists[item.playlist] = [];
           // }
-          console.log("newssss", novasPlaylists[item.playlist]);
           novasPlaylists[item.playlist].push(item);
         });
         setPlaylist(novasPlaylists);
       });
-  }, []);
+  }, [reload]);
   const videos = playlists.jogos;
-
-  console.log("aqui", playlists);
 
   return (
     <StyledTimeline>
@@ -90,13 +85,13 @@ export function Timeline({ valorDoFiltro, ...props }) {
               const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
               return titleNormalized.includes(valorDoFiltroNormalized);
             });
+
             if (listVideos.length > 0) {
               return (
                 <section>
                   <h2>{item[i]}</h2>
                   <div>
                     {listVideos.map((video) => {
-                      console.log("leeeeh", listVideos);
                       return (
                         <a href={video.url}>
                           <img src={video.thumb} />
