@@ -65,15 +65,17 @@ export function Header() {
   const [name, setName] = React.useState("");
   const [bio, setBio] = React.useState("");
   const [profilePic, setProfilePic] = React.useState("");
-
+  React.useEffect(() => {
+    fetch("http://api.github.com/users/edusantsouza")
+      .then((result) => result.json())
+      .then((jsonBody) => {
+        setName(jsonBody.name);
+        setBio(jsonBody.bio);
+        setProfilePic(jsonBody.avatar_url);
+      });
+  }, []);
   // O usuário está talhado no Fetch. Criar tela de Login de usuário.
-  fetch("http://api.github.com/users/edusantsouza")
-    .then((result) => result.json())
-    .then((jsonBody) => {
-      setName(jsonBody.name);
-      setBio(jsonBody.bio);
-      setProfilePic(jsonBody.avatar_url);
-    });
+
   return (
     <StyledHeader>
       <div>
