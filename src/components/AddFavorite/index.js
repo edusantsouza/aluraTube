@@ -35,15 +35,17 @@ const StyledFavorites = styled.div`
 export function Favorites(props) {
   return (
     <StyledFavorites>
-      <li key={props.name}>
-        <a href={`https://github.com/${props.name}`} target="_blank">
-          <img
-            src={`http://github.com/${props.name}.png`}
-            alt="Foto de perfil"
-          />
-          <p>{props.name}</p>
-        </a>
-      </li>
+      <ul>
+        <li key={props.name}>
+          <a href={`https://github.com/${props.name}`} target="_blank">
+            <img
+              src={`http://github.com/${props.name}.png`}
+              alt="Foto de perfil"
+            />
+            <p>{props.name}</p>
+          </a>
+        </li>
+      </ul>
     </StyledFavorites>
   );
 }

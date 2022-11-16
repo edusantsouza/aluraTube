@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import config from "../../../../config.json";
 
 const StyledModal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   height: 200px;
   width: 300px;
   background-color: ${({ theme }) => theme.backgroundLevel2};
@@ -10,10 +24,6 @@ const StyledModal = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   box-shadow: 2px 2px 20px 1px rgba(0, 0, 0, 0.3);
 
   h2 {
@@ -46,7 +56,7 @@ const StyledModal = styled.div`
     font-size: 12px;
   }
 
-  button {
+  #sumbmit-button {
     width: 200px;
     padding: 10px 10px;
     display: inline-block;
@@ -61,13 +71,6 @@ const StyledModal = styled.div`
     font-weight: 550;
     cursor: pointer;
     text-align: center;
-    transition: background 250ms ease-in-out, transform 150ms ease;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
-
-  button:hover {
-    opacity: 1;
   }
 `;
 
@@ -77,54 +80,66 @@ export function OpenModal({
   setAddFav,
   isVisible,
   setIsVisible,
+  reload,
+  setReload,
 }) {
-  // const insertFav = (addFav) => {
-  //   //Mudar isso depois para cadastrar essas infos no banco de dados
-  //   config.favoritos.push({ name: addFav });
-  // };
-
+  const [result, setResult] = useState("");
   //RegEx que verifica se a string recebida tem conteúdo ou só espaço em branco
   const isBlank = (str) => {
     return !str || /^\s*$/.test(str);
   };
+  const insertFav = () => {
+    supabase
+      .from("list_favorites")
+      .insert({
+        name: result,
+      })
+      .then((response) => {});
+  };
+  const getValue = (e) => {
+    setResult(e.target.value);
+  };
+  const clearAddFav = () => {
+    setAddFav("");
+  };
+  const toggleReload = () => {
+    !reload ? setReload(true) : setReload(false);
+    reload ? setReload(false) : setReload(true);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!isBlank(result)) {
+      setAddFav(result);
+      insertFav();
+      setIsVisible(false);
+      setReload("value");
+    } else {
+      alert("Você deve inserir um nome antes.");
+    }
+  };
+
+  useEffect(() => {}, [addFav]);
 
   return (
     isVisible && (
       <StyledModal className="modal-open">
         <div className="modal-open">
           <h2 className="modal-open">Adicionar Favorito</h2>
-          <form className="modal-open">
+          <form className="modal-open" onSubmit={(e) => onSubmit(e)}>
             <input
               placeholder="Nome do perfil"
               name="profile-name"
               type="text"
               className="modal-open"
-              onChange={(e) => {
-                setAddFav(e.target.value);
-              }}
+              id="input-value"
+              onChange={(e) => getValue(e)}
             />
-            <button
-              onClick={(e) => {
-                function runFav() {
-                  supabase
-                    .from("list_favorites")
-                    .insert({
-                      name: addFav,
-                    })
-                    .then((response) => {
-                      console.log(response);
-                    });
-                }
-                // console.log(isBlank(addFav))s
-                !isBlank(addFav)
-                  ? runFav()
-                  : alert("Você deve inserir um nome antes.");
-
-                setAddFav("");
-              }}
-            >
-              Adicionar
-            </button>
+            <input
+              id="sumbmit-button"
+              type="submit"
+              value="Adicionar"
+              className="modal-open"
+            />
           </form>
         </div>
       </StyledModal>

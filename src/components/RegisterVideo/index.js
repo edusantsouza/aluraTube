@@ -6,13 +6,13 @@ const PUBLIC_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12eGxqbXp4bGJvdmF3Z3lxeWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzNTQxMzksImV4cCI6MTk4MzkzMDEzOX0.UwTUw0goJq5SCI2KU_ti45SJem4eK-KWpEyjaY3ShbU";
 const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
 const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
+
 const getThumb = (url) => {
   return `https://img.youtube.com/vi/${url.split("v=")[1]}/hqdefault.jpg`;
 };
 
 function useForm(props) {
   const [values, setValues] = React.useState(props.initialValues);
-
   return {
     values,
     handleChange: (e) => {
@@ -36,7 +36,12 @@ const ModalAddVideo = ({
   setValues,
   reload,
   setReload,
+  setSeed,
 }) => {
+  const reset = () => {
+    setSeed(Math.random());
+    console.log("run");
+  };
   return (
     //Aproveitar o modal para implementar a opção de adicionar playlist
     //Adicionar ao modal uma seleção de Playlist onde o video será armazenado
@@ -45,11 +50,6 @@ const ModalAddVideo = ({
         className="modal"
         onSubmit={(e) => {
           e.preventDefault();
-
-          !reload ? setReload(true) : setReload(false);
-          reload ? setReload(false) : setReload(true);
-          console.log(reload);
-
           if (!isBlank(formCadastro.values.titulo && formCadastro.values.url)) {
             setIsModal(false);
             setValues(formCadastro.clearInput);
@@ -62,11 +62,12 @@ const ModalAddVideo = ({
               title: formCadastro.values.titulo,
               url: formCadastro.values.url,
               thumb: getThumb(formCadastro.values.url),
-              playlist: "jogos",
+              playlist: "videos",
             })
-            .then((response) => {
-              console.log(response);
-            });
+            .then((response) => {});
+          reset();
+          if (reload) setReload(false);
+          if (!reload) setReload(true);
         }}
       >
         <div>
@@ -96,7 +97,7 @@ const ModalAddVideo = ({
   );
 };
 
-export const RegisterVideo = ({ reload, setReload }) => {
+export const RegisterVideo = ({ reload, setReload, setSeed }) => {
   const [isModal, setIsModal] = React.useState(false);
   const [values, setValues] = React.useState({ titulo: "", url: "" });
   const formCadastro = useForm({
@@ -109,6 +110,7 @@ export const RegisterVideo = ({ reload, setReload }) => {
         +
       </button>
       <ModalAddVideo
+        setSeed={setSeed}
         reload={reload}
         setReload={setReload}
         formCadastro={formCadastro}

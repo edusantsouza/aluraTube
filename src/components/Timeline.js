@@ -53,40 +53,43 @@ const PUBLIC_KEY =
 const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
 const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
-export function Timeline({ valorDoFiltro, listFav, reload }) {
+export function Timeline({ valorDoFiltro, reload, setReload }) {
   const [playlists, setPlaylist] = React.useState({
-    jogos: [],
+    videos: [],
   });
-  //Descobrir como parar o comportamento da página de buscar os itens de forma duplicado no DB
-  React.useEffect(() => {
+
+  const fetchDataVideos = () => {
     supabase
       .from("list_video")
       .select("*")
       .then((dados) => {
         const novasPlaylists = { ...playlists };
         dados.data.forEach((item) => {
-          // if (!novasPlaylists[item.playlist]) {
-          //   novasPlaylists[item.playlist] = [];
-          // }
+          if (!novasPlaylists[item.playlist]) {
+            novasPlaylists[item.playlist] = [];
+          }
           novasPlaylists[item.playlist].push(item);
         });
         setPlaylist(novasPlaylists);
       });
-  }, [reload]);
-  const videos = playlists.jogos;
+  };
+  const videos = playlists.videos;
+
+  React.useEffect(fetchDataVideos, []);
 
   return (
     <StyledTimeline>
       {
         <div>
-          {Object.entries(playlists).map((item, i) => {
-            const listVideos = videos.filter((video) => {
-              const titleNormalized = video.title.toLowerCase();
-              const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
-              return titleNormalized.includes(valorDoFiltroNormalized);
-            });
+          {Object.entries(playlists).map(
+            (item, i) => {
+              const listVideos = videos.filter((video) => {
+                const titleNormalized = video.title.toLowerCase();
+                const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
+                return titleNormalized.includes(valorDoFiltroNormalized);
+              });
 
-            if (listVideos.length > 0) {
+              // if (listVideos.length > 0) {
               return (
                 <section>
                   <h2>{item[i]}</h2>
@@ -102,8 +105,9 @@ export function Timeline({ valorDoFiltro, listFav, reload }) {
                   </div>
                 </section>
               );
-            }
-          })}
+            },
+            // }
+          )}
         </div>
       }
     </StyledTimeline>

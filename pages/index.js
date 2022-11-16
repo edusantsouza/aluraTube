@@ -20,10 +20,12 @@ function Homepage() {
   const [valorDoFiltro, setValorDoFiltro] = React.useState("");
   const [isVisible, setIsVisible] = React.useState(false);
   const [addFav, setAddFav] = React.useState("");
+  const [reload, setReload] = React.useState("");
+  const [seed, setSeed] = React.useState(1);
   const [listFav, setListFav] = React.useState([]);
-  const [reload, setReload] = React.useState(false);
 
-  React.useEffect(() => {
+  //Tirar isso da index
+  const fetchData = () => {
     supabase
       .from("list_favorites")
       .select("*")
@@ -34,7 +36,15 @@ function Homepage() {
         });
         setListFav(newSetListFav);
       });
-  }, [addFav]);
+  };
+  React.useEffect(() => {
+    fetchData();
+    setReload("");
+  }, [reload]);
+
+  const runListFav = (item) => {
+    return <Favorites name={item.name} />;
+  };
   return (
     <div
       onClick={(e) => {
@@ -56,8 +66,14 @@ function Homepage() {
 
       <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
       <Header />
-      <RegisterVideo reload={reload} setReload={setReload} />
-      <Timeline valorDoFiltro={valorDoFiltro} listFav={listFav} reload={reload}>
+      <RegisterVideo reload={reload} setReload={setReload} setSeed={setSeed} />
+      <Timeline
+        key={seed}
+        valorDoFiltro={valorDoFiltro}
+        listFav={listFav}
+        reload={reload}
+        setReload={setReload}
+      >
         Conteúdo
       </Timeline>
       <Section>
@@ -66,11 +82,12 @@ function Homepage() {
           isVisible={isVisible}
           setIsVisible={setIsVisible}
         />
-
         {listFav.map((item) => {
-          return <Favorites name={item.name} />;
+          return runListFav(item);
         })}
         <OpenModal
+          reload={reload}
+          setReload={setReload}
           supabase={supabase}
           addFav={addFav}
           setAddFav={setAddFav}
