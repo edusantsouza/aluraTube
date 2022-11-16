@@ -39,7 +39,6 @@ function Homepage() {
   };
   React.useEffect(() => {
     fetchData();
-    setReload("");
   }, [reload]);
 
   const runListFav = (item) => {

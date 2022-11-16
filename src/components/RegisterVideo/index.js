@@ -36,12 +36,7 @@ const ModalAddVideo = ({
   setValues,
   reload,
   setReload,
-  setSeed,
 }) => {
-  const reset = () => {
-    setSeed(Math.random());
-    console.log("run");
-  };
   return (
     //Aproveitar o modal para implementar a opção de adicionar playlist
     //Adicionar ao modal uma seleção de Playlist onde o video será armazenado
@@ -65,9 +60,8 @@ const ModalAddVideo = ({
               playlist: "videos",
             })
             .then((response) => {});
-          reset();
-          if (reload) setReload(false);
-          if (!reload) setReload(true);
+          setReload("value");
+          setReload("");
         }}
       >
         <div>

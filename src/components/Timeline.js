@@ -75,7 +75,10 @@ export function Timeline({ valorDoFiltro, reload, setReload }) {
   };
   const videos = playlists.videos;
 
-  React.useEffect(fetchDataVideos, []);
+  React.useEffect(() => {
+    fetchDataVideos();
+    setReload("");
+  }, [reload]);
 
   return (
     <StyledTimeline>
