@@ -99,7 +99,7 @@ export function Timeline({ valorDoFiltro }) {
                       return (
                         <a href={video.url}>
                           <img src={video.thumb} />
-                          <span>{video.id}</span>
+                          <span>{video.title}</span>
                         </a>
                       );
                     })}
