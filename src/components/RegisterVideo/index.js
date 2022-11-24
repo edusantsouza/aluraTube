@@ -61,7 +61,6 @@ const ModalAddVideo = ({
             })
             .then((response) => {});
           setReload("value");
-          setReload("");
         }}
       >
         <div>

@@ -5,10 +5,10 @@ const StyledHeader = styled.div`
   background-color: ${({ theme }) => theme.backgroundLevel1};
 
   .banner {
-    width: 100vw;
-    height: 200px;
+    height: 300px;
     background-image: url("https://media-exp1.licdn.com/dms/image/D5616AQF3wbEQpGLBww/profile-displaybackgroundimage-shrink_350_1400/0/1666885083116?e=1674086400&v=beta&t=1rGpuBBhq-9l1CJ__1mNgV_94oWAACYOC_hmI6dzFhY");
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .profile-pic {
@@ -62,9 +62,11 @@ const StyledHeader = styled.div`
 `;
 
 export function Header() {
-  const [name, setName] = React.useState("");
-  const [bio, setBio] = React.useState("");
-  const [profilePic, setProfilePic] = React.useState("");
+  const [name, setName] = React.useState("Eduardo Sant");
+  const [bio, setBio] = React.useState(
+    "Front-end Development Student | HTML5 | CSS | Javascritp | ReactJS | NodeJS",
+  );
+  const [profilePic, setProfilePic] = React.useState("user_avatar");
 
   fetch("http://api.github.com/users/edusantsouza")
     .then((result) => result.json())
@@ -73,8 +75,6 @@ export function Header() {
       setBio(jsonBody.bio);
       setProfilePic(jsonBody.avatar_url);
     });
-
-  // O usuário está talhado no Fetch. Criar tela de Login de usuário.
 
   return (
     <StyledHeader>
