@@ -53,10 +53,11 @@ const PUBLIC_KEY =
 const PROJECT_URL = "https://mvxljmzxlbovawgyqyjl.supabase.co";
 const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
-export function Timeline({ valorDoFiltro, reload, setReload }) {
+export function Timeline({ valorDoFiltro }) {
   const [playlists, setPlaylist] = React.useState({
     videos: [],
   });
+  const [videos, setVideos] = React.useState(playlists.videos);
 
   const fetchDataVideos = () => {
     supabase
@@ -73,26 +74,23 @@ export function Timeline({ valorDoFiltro, reload, setReload }) {
         setPlaylist(novasPlaylists);
       });
   };
-  const videos = playlists.videos;
-
+  console.log(videos);
   React.useEffect(() => {
     fetchDataVideos();
-    setReload("");
-  }, [reload]);
+  }, []);
 
   return (
     <StyledTimeline>
       {
         <div>
-          {Object.entries(playlists).map(
-            (item, i) => {
-              const listVideos = videos.filter((video) => {
-                const titleNormalized = video.title.toLowerCase();
-                const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
-                return titleNormalized.includes(valorDoFiltroNormalized);
-              });
+          {Object.entries(playlists).map((item, i) => {
+            const listVideos = videos.filter((video) => {
+              const titleNormalized = video.title.toLowerCase();
+              const valorDoFiltroNormalized = valorDoFiltro.toLowerCase();
+              return titleNormalized.includes(valorDoFiltroNormalized);
+            });
 
-              // if (listVideos.length > 0) {
+            if (listVideos.length > 0) {
               return (
                 <section>
                   <h2>{item[i]}</h2>
@@ -101,16 +99,15 @@ export function Timeline({ valorDoFiltro, reload, setReload }) {
                       return (
                         <a href={video.url}>
                           <img src={video.thumb} />
-                          <span>{video.title}</span>
+                          <span>{video.id}</span>
                         </a>
                       );
                     })}
                   </div>
                 </section>
               );
-            },
-            // }
-          )}
+            }
+          })}
         </div>
       }
     </StyledTimeline>

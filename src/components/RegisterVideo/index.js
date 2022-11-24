@@ -34,8 +34,6 @@ const ModalAddVideo = ({
   setIsModal,
   values,
   setValues,
-  reload,
-  setReload,
 }) => {
   return (
     //Aproveitar o modal para implementar a opção de adicionar playlist
@@ -60,7 +58,6 @@ const ModalAddVideo = ({
               playlist: "videos",
             })
             .then((response) => {});
-          setReload("value");
         }}
       >
         <div>

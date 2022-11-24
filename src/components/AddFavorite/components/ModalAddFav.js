@@ -112,13 +112,12 @@ export function OpenModal({
       setAddFav(result);
       insertFav();
       setIsVisible(false);
-      setReload("value");
     } else {
       alert("Você deve inserir um nome antes.");
     }
   };
 
-  useEffect(() => {}, [addFav]);
+  useEffect(() => {}, []);
 
   return (
     isVisible && (
